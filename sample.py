@@ -13,7 +13,6 @@ browser = webdriver.Chrome()
 #AWSコンソールサインイン画面を開く
 browser.get("https://aws.amazon.com/jp/console/")
 elem = browser.find_element(By.XPATH, '//*[@id="aws-page-content-main"]/div[2]/div/div/div[2]/div[2]/div/a')
-elem.click()
 #ログイン実施
 load_dotenv()
 #Enter AccountID
