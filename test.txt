@@ -1,3 +1,0 @@
-test on localsw
-update on local
-updated on local update-test branch
