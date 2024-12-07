@@ -1,7 +1,8 @@
-from selenium import webdriver
+from selenium import webdriver # type: ignore
 from selenium.webdriver.common.by import By
-from dotenv import load_dotenv
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from dotenv import load_dotenv
 import os
 
 #オプション設定
@@ -9,8 +10,12 @@ options = Options()
 #ブラウザを開いたまま処理終了
 options.add_experimental_option("detach", True)
 # "Chromeは自動テストソフトウェアによって胃制御されています"を非表示にする
-options.add_experimental_option(“excludeSwitches”, [‘enable-automation’])
-
+options.add_experimental_option('excludeSwitches', ['enable-automation'])
+#パスワード保存ポップアップを無効化してブラウザ起動
+prefs = {
+    "credentials_enable_service": False
+}
+options.add_experimental_option('prefs', prefs)
 # region_list = {'ap-northeast-1': 'https://ap-northeast-1.console.aws.amazon.com/console/home?region=ap-northeast-1#',
 #                'ap-northeast-3': 'https://ap-northeast-3.console.aws.amazon.com/console/home?region=ap-northeast-3#',
 #                'us-east-1': 'https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#'
@@ -24,14 +29,23 @@ elem.click()
 #ログイン実施
 load_dotenv()
 #Enter AccountID
-elem = browser.find_element(By.XPATH, '//*[@id="account"]')
-elem.send_keys(os.environ["USER_ID"])
+elem = browser.find_element(By.XPATH , '//*[@id="account"]')
+elem.send_keys(os.environ["USER_ACCOUNT"])
 #Enter Username
 elem = browser.find_element(By.XPATH, '//*[@id="username"]')
-elem.send_keys('abcdefghijklmnopqrstu')
+elem.send_keys(os.environ["USER_ID"])
 #Enter Password
 elem = browser.find_element(By.XPATH, '//*[@id="password"]')
-elem.send_keys('password')
+elem.send_keys(os.environ["USER_PASSWORD"])
+#Enter SingIn
+elem = browser.find_element(By.XPATH, '//*[@id="signin_button"]')
+elem.click()
+#--------------MFAコードの入力,Submit--------------
+input = input("MFAコードを入力してください。")
+elem = browser.find_element(By.XPATH, '//*[@id="mfaCode"]')
+elem.send_keys(input)
+elem.send_keys(Keys.ENTER)
+
 
 
 # #ap-northeast-1, S3で資料採取
