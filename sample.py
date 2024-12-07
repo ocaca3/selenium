@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from dotenv import load_dotenv
 import os
+import time
 
 #オプション設定
 options = Options()
@@ -16,16 +17,13 @@ prefs = {
     "credentials_enable_service": False
 }
 options.add_experimental_option('prefs', prefs)
-# region_list = {'ap-northeast-1': 'https://ap-northeast-1.console.aws.amazon.com/console/home?region=ap-northeast-1#',
-#                'ap-northeast-3': 'https://ap-northeast-3.console.aws.amazon.com/console/home?region=ap-northeast-3#',
-#                'us-east-1': 'https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#'
-#                }
 
 browser = webdriver.Chrome(options=options)
 #AWSコンソールサインイン画面を開く
 browser.get("https://aws.amazon.com/jp/console/")
 elem = browser.find_element(By.XPATH, '//*[@id="aws-page-content-main"]/div[2]/div/div/div[2]/div[2]/div/a')
 elem.click()
+time.sleep(10)
 #ログイン実施
 load_dotenv()
 #Enter AccountID
@@ -45,10 +43,9 @@ input = input("MFAコードを入力してください。")
 elem = browser.find_element(By.XPATH, '//*[@id="mfaCode"]')
 elem.send_keys(input)
 elem.send_keys(Keys.ENTER)
+time.sleep(10)
 
-
-
-# #ap-northeast-1, S3で資料採取
-# browser.get('https://ap-northeast-1.console.aws.amazon.com/s3/home?region=ap-northeast-1#')
-# elem = browser.find_element(By.XPATH, '/html/body/div[2]/div[2]/div/div[1]/div/div/div[1]/div/nav/div[2]/div/ul[1]/li[1]/a/span')
-# elem.click()
+#ap-northeast-1, S3で資料採取
+browser.get('https://ap-northeast-1.console.aws.amazon.com/s3/home?region=ap-northeast-1#')
+elem = browser.find_element(By.XPATH, '/html/body/div[2]/div[2]/div/div[1]/div/div/div[1]/div/nav/div[2]/div/ul[1]/li[1]/a/span')
+elem.click()
